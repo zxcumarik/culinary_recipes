@@ -1,10 +1,9 @@
 from flask import render_template, redirect, url_for, flash
 import sqlalchemy as sa
 from flask_login import logout_user, current_user, login_required, login_user
-
-from app import app, db
-from app.models import Recipes, User
-from app.forms import RecipesForm, SignForm, LoginForm
+from . import app, db
+from .models import Recipes, User
+from .forms import RecipesForm, SignForm, LoginForm
 
 
 @login_required

@@ -1,9 +1,9 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, SubmitField
 from wtforms.validators import DataRequired, Email, ValidationError, EqualTo
-from app import db
+from . import db
 import sqlalchemy as sa
-from app.models import User
+from .models import User
 
 
 class RecipesForm(FlaskForm):
