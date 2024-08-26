@@ -6,16 +6,16 @@
     <form method="post">
         {{ form.hidden_tag() }}
         <p>
-            {{ form.email.label(class='form-label') }}
-            {{ form.email(class='form-control') }}
+            {{ form.email.label(class="form-label") }}
+            {{ form.email(class="form-control") }}
         </p>
         <p>
-            {{ form.password.label(class='form-label') }}
-            {{ form.password(class='form-control') }}
+            {{ form.password.label(class="form-label") }}
+            {{ form.password(class="form-control") }}
         </p>
-        <div>
+        <p>
             {{ form.submit(class="btn btn-primary mb-3") }}
-        </div>
+        </p>
     </form>
 </div>
 {% endblock %}

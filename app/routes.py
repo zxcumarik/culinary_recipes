@@ -6,29 +6,28 @@ from .models import Recipes, User
 from .forms import RecipesForm, SignForm, LoginForm
 
 
-@login_required
 @app.route('/')
 def home():
     recipes = db.session.scalars(sa.select(Recipes)).all()
     return render_template('home.html', recipes=recipes)
 
 
-@app.route('/login', methods=['POST', 'GET'])
-def login_up():
+@app.route('/login', methods=['GET', 'POST'])
+def login():
     if current_user.is_authenticated:
         return redirect(url_for('home'))
     form = LoginForm()
     if form.validate_on_submit():
         user = db.session.scalar(sa.select(User).where(User.email == form.email.data))
         if user is None or not user.check_password(form.password.data):
-            return redirect(url_for('login_up'))
+            return redirect(url_for('login'))
         login_user(user)
         return redirect(url_for('home'))
-    return render_template('home.html', form=form)
+    return render_template('login_up.html', form=form)
 
 
-@app.route('/sign', methods=['POST', 'GET'])
-def sign_up():
+@app.route('/sign', methods=['GET', 'POST'])
+def sign():
     if current_user.is_authenticated:
         return redirect(url_for('home'))
     form = SignForm()
@@ -37,12 +36,12 @@ def sign_up():
         user.set_password(form.password.data)
         db.session.add(user)
         db.session.commit()
-        return redirect(url_for('login_up'))
-    return render_template('home.html', form=form)
+        return redirect(url_for('login'))
+    return render_template('sign_up.html', form=form)
 
 
 @login_required
 @app.route('/logout')
 def logout():
     logout_user()
-    return render_template('sign.html')
+    return render_template('sign_up.html')
