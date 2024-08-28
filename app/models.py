@@ -40,7 +40,6 @@ class Recipes(db.Model):
     id: so.MappedColumn[int] = so.mapped_column(primary_key=True)
     title: so.MappedColumn[str] = so.mapped_column(sa.String(64))
     description: so.MappedColumn[str] = so.mapped_column(sa.String(128))
-    user_id: so.Mapped[int] = so.mapped_column(sa.ForeignKey(User.id))
     author: so.Mapped[User] = so.relationship('User', secondary=user_recipes, back_populates='users')
 
     def __repr__(self):
