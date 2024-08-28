@@ -1,10 +1,17 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<h1>Hello {{ current_user }}</h1>
+<h1>Hello</h1>
 {% for recipe in recipes %}
-    <p>
-        {{ recipe }}
-    </p>
+<div class="card" style="width: 18rem;">
+    <div class="card-body">
+        <h1 class="card-text">Name: {{ recipe.title }}</h1>
+        <p class="card-text">Description: {{ recipe.description }}</p>
+        <p class="card-text">Author: {{ recipe.author }}</p>
+        {% if recipe.author == current_user %}
+        <a href="{{ url_for('edit_recipe', recipe_id=recipe.id) }}" class="btn btn-primary">Edit</a>
+        {% endif %}
+    </div>
+</div>
 {% endfor %}
 {% endblock %}

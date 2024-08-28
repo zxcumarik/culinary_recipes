@@ -14,22 +14,12 @@ user_recipes = sa.Table(
 )
 
 
-class Recipes(db.Model):
-    id: so.MappedColumn[int] = so.mapped_column(primary_key=True)
-    title: so.MappedColumn[str] = so.mapped_column(sa.String(64))
-    description: so.MappedColumn[str] = so.mapped_column(sa.String(128))
-    author: so.WriteOnlyMapped['User'] = so.relationship('User', secondary=user_recipes, back_populates='users')
-
-    def __repr__(self):
-        return f'Tour: {self.title}'
-
-
 class User(UserMixin, db.Model):
     id: so.Mapped[int] = so.mapped_column(primary_key=True)
     username: so.Mapped[str] = so.mapped_column(sa.String(64))
     email: so.Mapped[str] = so.mapped_column(sa.String(64))
     password_hash: so.Mapped[Optional[str]] = so.mapped_column(sa.String(128))
-    users: so.WriteOnlyMapped[Recipes] = so.relationship('Recipes', secondary=user_recipes, back_populates='author')
+    users: so.WriteOnlyMapped['Recipes'] = so.relationship('Recipes', secondary=user_recipes, back_populates='author')
 
     def set_password(self, password):
         self.password_hash = generate_password_hash(password)
@@ -44,3 +34,14 @@ class User(UserMixin, db.Model):
 @login.user_loader
 def load_user(id):
     return db.session.get(User, int(id))
+
+
+class Recipes(db.Model):
+    id: so.MappedColumn[int] = so.mapped_column(primary_key=True)
+    title: so.MappedColumn[str] = so.mapped_column(sa.String(64))
+    description: so.MappedColumn[str] = so.mapped_column(sa.String(128))
+    user_id: so.Mapped[int] = so.mapped_column(sa.ForeignKey(User.id))
+    author: so.Mapped[User] = so.relationship('User', secondary=user_recipes, back_populates='users')
+
+    def __repr__(self):
+        return f'Tour: {self.title}'
