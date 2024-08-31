@@ -75,3 +75,21 @@ def edit_recipe(recipe_id):
         db.session.commit()
         return redirect(url_for('home'))
     return render_template('create_recipes.html', form=form)
+
+@app.route('/profile')
+def profile():
+    recipes = db.session.scalars(current_user.recipes.select())
+    return render_template('profile.html', recipes=recipes)
+
+
+
+
+@app.route('/profile/<int:user_id>/edit', methods=['GET', 'POST'])
+def edit_profile(user_id):
+    user = db.session.scalar(sa.select(User))
+    if request.method == 'POST':
+        name = request.form['name']
+        user['name'] = name
+        return redirect(url_for('profile', user_id=user_id))
+
+    return render_template('edit_profile.html', user=user)
