@@ -55,7 +55,7 @@ def new_recipes():
         return redirect(url_for('home'))
     form = RecipesForm()
     if form.validate_on_submit():
-        recipe = Recipes(title=form.title.data, description=form.description.data)
+        recipe = Recipes(title=form.title.data, description=form.description.data, author=current_user)
         db.session.add(recipe)
         db.session.commit()
         return redirect(url_for('home'))
