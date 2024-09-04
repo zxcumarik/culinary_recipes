@@ -2,13 +2,16 @@
 
 {% block content %}
 {% for recipe in recipes %}
-<div class="card" style="width: 18rem;">
+<div class="card container mt-3 border-warning" style="width: 18rem;">
     <div class="card-body">
         <h1 class="card-text">Name: {{ recipe.title }}</h1>
         <p class="card-text">Description: {{ recipe.description }}</p>
         <p class="card-text">Author: {{ recipe.author }}</p>
         {% if recipe.author == current_user %}
         <a href="{{ url_for('edit_recipe', recipe_id=recipe.id) }}" class="btn btn-primary">Edit</a>
+        {% endif %}
+        {% if current_user.is_authenticated %}
+        <a href="{{ url_for('save_recipe', recipe_id=recipe.id) }}" class="btn btn-warning">Save</a>
         {% endif %}
     </div>
 </div>

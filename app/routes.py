@@ -67,7 +67,7 @@ def edit_recipe(recipe_id):
     if not current_user.is_authenticated:
         return redirect(url_for('home'))
     recipe = db.session.scalar(sa.select(Recipes).where(Recipes.id == recipe_id))
-    form = RecipesForm
+    form = RecipesForm(obj=recipe)
     if form.validate_on_submit():
         recipe.title = form.title.data
         recipe.description = form.description.data
@@ -75,3 +75,20 @@ def edit_recipe(recipe_id):
         db.session.commit()
         return redirect(url_for('home'))
     return render_template('create_recipes.html', form=form)
+
+
+@app.route('/profile')
+def profile():
+    recipes = db.session.scalars(current_user.recipes.select())
+    return render_template('profile.html', recipes=recipes)
+
+
+@app.route('/recipe/save/<int:recipe_id>')
+def save_recipe(recipe_id):
+    recipe = db.session.scalar(sa.select(Recipes).where(Recipes.id == recipe_id))
+    recipes = db.session.scalars(current_user.recipes.select())
+    if recipe in recipes:
+        return '<h1>You have already saved this recipe</h1>'
+    current_user.recipes.add(recipe)
+    db.session.commit()
+    return '<h1>Recipe saved</h1>'

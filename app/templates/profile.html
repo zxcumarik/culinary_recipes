@@ -1,6 +1,15 @@
 {% extends 'base.html' %}
 
 {%block content %}
+<div class="container mt-4 w-25">
     <h1>{{current_user}}'s Profile</h1>
-    <a href="{{ url_for('edit_profile', user_id=user_id) }}">Edit Profile</a>
+    <div class="btn text-warning border-dark">
+        <h3>Saved recipes:</h3>
+    </div>
+    {% for recipe in recipes %}
+    <div class="container mt-4">
+        <p>{{ recipe }}</p>
+    </div>
+    {% endfor %}
+</div>
 {% endblock %}

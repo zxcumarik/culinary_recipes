@@ -12,7 +12,7 @@ class User(UserMixin, db.Model):
     username: so.Mapped[str] = so.mapped_column(sa.String(64))
     email: so.Mapped[str] = so.mapped_column(sa.String(64))
     password_hash: so.Mapped[Optional[str]] = so.mapped_column(sa.String(128))
-    users: so.WriteOnlyMapped['Recipes'] = so.relationship('Recipes', back_populates='author')
+    recipes: so.WriteOnlyMapped['Recipes'] = so.relationship('Recipes', back_populates='author')
 
     def set_password(self, password):
         self.password_hash = generate_password_hash(password)
@@ -34,7 +34,7 @@ class Recipes(db.Model):
     title: so.MappedColumn[str] = so.mapped_column(sa.String(64))
     description: so.MappedColumn[str] = so.mapped_column(sa.String(128))
     user_id: so.Mapped[int] = so.mapped_column(sa.ForeignKey(User.id))
-    author: so.Mapped[User] = so.relationship('User', back_populates='users')
+    author: so.Mapped[User] = so.relationship('User', back_populates='recipes')
 
     def __repr__(self):
-        return f'Tour: {self.title}'
+        return f'Recipe: {self.title}'
