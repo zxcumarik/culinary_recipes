@@ -93,3 +93,5 @@ def edit_profile(user_id):
         return redirect(url_for('profile', user_id=user_id))
 
     return render_template('edit_profile.html', user=user)
+
+
