@@ -12,7 +12,7 @@ class RecipesForm(FlaskForm):
     submit = SubmitField('Create')
 
 
-class SignForm(FlaskForm):
+class SignUpForm(FlaskForm):
     username = StringField('Username', validators=[DataRequired()])
     email = StringField('Email', validators=[DataRequired(), Email()])
     password = PasswordField('Password', validators=[DataRequired()])
