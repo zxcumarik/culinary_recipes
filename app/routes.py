@@ -96,3 +96,4 @@ def save_recipe(recipe_id):
 @app.route('/recipe/already')
 def already_saved():
     return render_template('already_saved.html')
+
