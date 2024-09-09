@@ -37,4 +37,4 @@ class Recipes(db.Model):
     author: so.Mapped[User] = so.relationship('User', back_populates='recipes')
 
     def __repr__(self):
-        return f'Recipe: {self.title}'
+        return f'Recipe : {self.title}'
