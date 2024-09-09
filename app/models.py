@@ -29,23 +29,24 @@ def load_user(id):
     return db.session.get(User, int(id))
 
 
+class Category(db.Model):
+    id: so.MappedColumn[int] = so.mapped_column(primary_key=True, autoincrement=True)
+    name: so.MappedColumn[str] = so.mapped_column(nullable=False, unique=True)
+    category_recipes: so.Mapped['Recipes'] = so.relationship('Recipes', back_populates='categories')
+
+
+def __repr__(self):
+    return f"Category: {self.name}"
+
+
 class Recipes(db.Model):
     id: so.MappedColumn[int] = so.mapped_column(primary_key=True)
     title: so.MappedColumn[str] = so.mapped_column(sa.String(64))
     description: so.MappedColumn[str] = so.mapped_column(sa.String(128))
     user_id: so.Mapped[int] = so.mapped_column(sa.ForeignKey(User.id))
     author: so.Mapped[User] = so.relationship('User', back_populates='recipes')
-    categories: so.Mapped['Category'] = so.relationship('Category', back_populates='category_recipes')
+    category_id: so.Mapped[int] = so.mapped_column(sa.ForeignKey(Category.id))
+    categories: so.Mapped[Category] = so.relationship('Category', back_populates='category_recipes')
 
     def __repr__(self):
         return f'Recipe : {self.title}'
-
-
-class Category(db.Model):
-    id: so.MappedColumn[int] = so.mapped_column(primary_key=True, autoincrement=True)
-    name: so.MappedColumn[str] = so.mapped_column(nullable=False, unique=True)
-    category_recipes: so.Mapped[Recipes] = so.relationship('Recipes', back_populates='categories')
-
-
-def __repr__(self):
-    return f"Category: {self.name}"

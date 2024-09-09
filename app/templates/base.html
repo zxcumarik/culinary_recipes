@@ -22,8 +22,10 @@
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                     <li class="nav-item">
-                        <a class="navbar-brand nav-link active text-dark" aria-current="page"
-                           href="{{ url_for('home') }}">Home</a>
+                        <a class="navbar-brand active text-dark" aria-current="page">Culinary Recipes</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-secondary" href="{{ url_for('home') }}">Home</a>
                     </li>
                     {% if current_user.is_authenticated %}
                     <li class="nav-item">
@@ -37,6 +39,9 @@
                     </div>
                     <li class="nav-item">
                         <a class="nav-link" href="{{ url_for('new_recipes') }}">Create a new recipe</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('new_category') }}">Create a new category</a>
                     </li>
                     {% else %}
                     <li class="nav-item">

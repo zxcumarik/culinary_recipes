@@ -9,7 +9,8 @@ from .forms import RecipesForm, SignUpForm, LoginForm, CategoryForm
 @app.route('/')
 def home():
     recipes = db.session.scalars(sa.select(Recipes)).all()
-    return render_template('home.html', recipes=recipes)
+    categories = db.session.scalars(sa.select(Category)).all()
+    return render_template('home.html', recipes=recipes, categories=categories)
 
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -44,7 +45,7 @@ def signup():
 @login_required
 def logout():
     logout_user()
-    return render_template(url_for('login'))
+    return redirect(url_for('login'))
 
 
 @app.route('/new/recipes', methods=['POST', 'GET'])
