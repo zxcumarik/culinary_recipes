@@ -53,8 +53,10 @@ def new_recipes():
     if not current_user.is_authenticated:
         return redirect(url_for('home'))
     form = RecipesForm()
+    form.category.choices = [(category.id, category.name) for category in Category.query.all()]
     if form.validate_on_submit():
-        recipe = Recipes(title=form.title.data, description=form.description.data, author=current_user)
+        recipe = Recipes(title=form.title.data, description=form.description.data, author=current_user,
+                         category_id=form.category.data)
         db.session.add(recipe)
         db.session.commit()
         return redirect(url_for('home'))
@@ -96,4 +98,3 @@ def save_recipe(recipe_id):
 @app.route('/recipe/already')
 def already_saved():
     return render_template('already_saved.html')
-

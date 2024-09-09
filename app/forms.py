@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, SubmitField
+from wtforms import StringField, PasswordField, SubmitField, SelectField
 from wtforms.validators import DataRequired, Email, ValidationError, EqualTo
 from . import db
 import sqlalchemy as sa
@@ -9,6 +9,7 @@ from .models import User
 class RecipesForm(FlaskForm):
     title = StringField('Title', validators=[DataRequired()])
     description = StringField('Description', validators=[DataRequired()])
+    category =  SelectField('Category', coerce=int, validators=[DataRequired()])
     submit = SubmitField('Create')
 
 
@@ -25,4 +26,6 @@ class LoginForm(FlaskForm):
     password = PasswordField('Password', validators=[DataRequired()])
     submit = SubmitField('Login up')
 
-
+class CategoryForm(FlaskForm):
+    name = StringField('Category name', validators=[DataRequired()])
+    submit = StringField('Create')
