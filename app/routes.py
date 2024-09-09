@@ -1,9 +1,9 @@
-from flask import render_template, redirect, url_for, flash, request
+from flask import render_template, redirect, url_for
 import sqlalchemy as sa
 from flask_login import logout_user, current_user, login_required, login_user
 from . import app, db
-from .models import Recipes, User
-from .forms import RecipesForm, SignUpForm, LoginForm
+from .models import Recipes, User, Category
+from .forms import RecipesForm, SignUpForm, LoginForm, CategoryForm
 
 
 @app.route('/')
@@ -53,8 +53,10 @@ def new_recipes():
     if not current_user.is_authenticated:
         return redirect(url_for('home'))
     form = RecipesForm()
+    form.category.choices = [(category.id, category.name) for category in Category.query.all()]
     if form.validate_on_submit():
-        recipe = Recipes(title=form.title.data, description=form.description.data, author=current_user)
+        recipe = Recipes(title=form.title.data, description=form.description.data, author=current_user,
+                         category_id=form.category.data)
         db.session.add(recipe)
         db.session.commit()
         return redirect(url_for('home'))
@@ -96,4 +98,27 @@ def save_recipe(recipe_id):
 @app.route('/recipe/already')
 def already_saved():
     return render_template('already_saved.html')
+
+
+@app.route('/category/new', methods=['POST', 'GET'])
+def new_category():
+    form = CategoryForm()
+    if form.validate_on_submit():
+        category = Category(name=form.name.data)
+        db.session.add(category)
+        db.session.commit()
+        return redirect(url_for('home'))
+    return render_template('create_category.html', form=form)
+
+
+@app.route('/category/edit', methods=['POST', 'GET'])
+def edit_category(category_id):
+    category = db.session.scalars(sa.select(Category).where(Category.id == category_id))
+    form = CategoryForm(obj=category)
+    if form.validate_on_submit():
+        category.name = form.name.data
+        db.session.add(category)
+        db.session.commit()
+        return redirect(url_for('home'))
+    return render_template('create_category.html', form=form)
 

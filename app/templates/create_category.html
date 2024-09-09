@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container w-50">
+    <h2>Recipe</h2>
+    <form method="post">
+        {{ form.hidden_tag() }}
+        <div class="row mb-3">
+            {{ form.name.label(class="col-sm-3 col-form-label") }}
+            <div class="col-sm-8">
+                {{ form.name(class="form-control") }}
+            </div>
+        </div>
+        <div>
+            {{ form.submit(class="btn btn-primary mb-3") }}
+        </div>
+    </form>
+</div>
+{% endblock %}
